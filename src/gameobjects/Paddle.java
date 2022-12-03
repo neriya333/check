@@ -32,10 +32,10 @@ public class Paddle extends GameObject {
     public void update(float deltaTime) {
         super.update(deltaTime);
         Vector2 movement_dir = Vector2.ZERO;
-        if(this.userInputListener.isKeyPressed(KeyEvent.VK_LEFT)) {
+        if(this.userInputListener.isKeyPressed(KeyEvent.VK_LEFT) && this.getTopLeftCorner().x() > 0) {
             movement_dir = movement_dir.add(Vector2.LEFT);
         }
-        else if(userInputListener.isKeyPressed(KeyEvent.VK_RIGHT)) {
+        else if(userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) && getTopLeftCorner().x() + this.getDimensions().x() < windowDimensions.x()) {
             movement_dir = movement_dir.add(Vector2.RIGHT);
         }
         setVelocity(movement_dir.mult(MOVE_SPEED));

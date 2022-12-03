@@ -2,18 +2,21 @@ package gameobjects;
 
 import danogl.GameObject;
 import danogl.collisions.GameObjectCollection;
-import danogl.gui.rendering.Renderable;
 import danogl.gui.rendering.TextRenderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
 import java.awt.*;
 
+/**
+ * Print textual information - value of extra life.
+ * Changes color based on value.
+ * made by extending GameObject.
+ */
 public class NumericLifeCounter extends GameObject {
-    private String baseString = "Life: ";
-    private TextRenderable textRenderable;
-    private Counter livesCounter;
-    private GameObjectCollection gameObjectCollection;
+    private String MSG_CONS_PART = "Life: ";
+    private final TextRenderable textRenderable;
+    private final Counter livesCounter;
     private Color color;
 
     /**
@@ -23,11 +26,10 @@ public class NumericLifeCounter extends GameObject {
      *                      Note that (0,0) is the top-left corner of the window.
      * @param dimensions    Width and height in window coordinates.
      */
-    public NumericLifeCounter(Counter livesCounter, Vector2 topLeftCorner, Vector2 dimensions, GameObjectCollection gameObjectCollection) {
+    public NumericLifeCounter(Counter livesCounter, Vector2 topLeftCorner, Vector2 dimensions) {
         super(topLeftCorner, dimensions, null);
         this.livesCounter = livesCounter;
-        this.gameObjectCollection = gameObjectCollection;
-        this.textRenderable = new TextRenderable(baseString+livesCounter.value());
+        this.textRenderable = new TextRenderable(MSG_CONS_PART +livesCounter.value());
         textRenderable.setColor(Color.GREEN);
         this.renderer().setRenderable(textRenderable);
     }
@@ -35,8 +37,9 @@ public class NumericLifeCounter extends GameObject {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if(livesCounter.value() == 2) textRenderable.setColor(Color.yellow);
+        if(livesCounter.value() > 2) textRenderable.setColor(Color.green);
+        else if(livesCounter.value() == 2) textRenderable.setColor(Color.yellow);
         else if (livesCounter.value() == 1) textRenderable.setColor(Color.red);
-        textRenderable.setString(baseString + livesCounter.value());
+        textRenderable.setString(MSG_CONS_PART + livesCounter.value());
     }
 }
