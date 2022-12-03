@@ -47,7 +47,7 @@ public class GraphicLifeCounter extends GameObject {
             numOfLives--;
         }
         if(livesCounter.value() > numOfLives){
-            gameObjectsCollection.addGameObject(heartCollection[livesCounter.value()-1],Layer.BACKGROUND+1);
+            gameObjectsCollection.addGameObject(heartCollection[numOfLives],Layer.BACKGROUND+1);
             numOfLives++;
         }
     }
