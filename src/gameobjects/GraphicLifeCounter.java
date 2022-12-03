@@ -16,27 +16,25 @@ public class GraphicLifeCounter extends GameObject {
     private GameObjectCollection gameObjectsCollection;
     private GameObject[] heartCollection;
     private int numOfLives;
+    private int NUM_EXTRA_LIFE = 1;
 
     /**
-     *
-     * @param widgetTopLeftCorner
-     * @param widgetDimensions
-     * @param livesCounter
-     * @param widgetRenderable
-     * @param gameObjectsCollection
-     * @param numOfLives
+     *  @param widgetTopLeftCorner top left corner of the GraphicLifeCounter.
+     * @param widgetDimensions the dims of the GraphicLifeCounter.
+     * @param livesCounter Count how many Lives the player has.
+     * @param widgetRenderable A renderable image of a heart. represent single life.
+     * @param gameObjectsCollection the collection
      */
-
     public GraphicLifeCounter(Vector2 widgetTopLeftCorner, Vector2 widgetDimensions,
                               Counter livesCounter, Renderable widgetRenderable,
-                              GameObjectCollection gameObjectsCollection, int numOfLives) {
+                              GameObjectCollection gameObjectsCollection) {
         super(widgetTopLeftCorner, widgetDimensions.multX(10).multY(2), null);
         this.widgetTopLeftCorner = widgetTopLeftCorner;
         this.widgetDimensions = widgetDimensions;
         this.livesCounter = livesCounter;
         this.widgetRenderable = widgetRenderable;
         this.gameObjectsCollection = gameObjectsCollection;
-        this.numOfLives = numOfLives;
+        this.numOfLives = livesCounter.value();
 
         createGameObjectHearts();
     }
@@ -45,25 +43,29 @@ public class GraphicLifeCounter extends GameObject {
     public void update(float deltaTime) {
         super.update(deltaTime);
         if (livesCounter.value() < numOfLives){
-            updateLife();
+            gameObjectsCollection.removeGameObject(heartCollection[livesCounter.value()],Layer.BACKGROUND+1);
+            numOfLives--;
+        }
+        if(livesCounter.value() > numOfLives){
+            gameObjectsCollection.addGameObject(heartCollection[livesCounter.value()-1],Layer.BACKGROUND+1);
+            numOfLives++;
         }
     }
 
+    /**
+     * creates and fill an array named [heartCollection] with GameObjects images that each represents a life.
+     * Add [numOfLives] of them to the gameObjectCollection, where [numOfLives+NUM_EXTRA_LIFE] is the size of the array.
+     */
     private void createGameObjectHearts(){
-        heartCollection = new GameObject[numOfLives];
+        heartCollection = new GameObject[numOfLives+NUM_EXTRA_LIFE];
         Vector2 xSize = new Vector2(widgetDimensions.x()+1,0);
-        for (int heartNumber = 0; heartNumber < numOfLives; heartNumber++) {
+        for (int heartNumber = 0; heartNumber < numOfLives + NUM_EXTRA_LIFE; heartNumber++) {
             Vector2 location = widgetDimensions.add(xSize.multX(heartNumber));
             GameObject heart = new GameObject(widgetTopLeftCorner.add(location), widgetDimensions, widgetRenderable);
-
-            gameObjectsCollection.addGameObject(heart, Layer.BACKGROUND+1);
+            if (heartNumber < numOfLives){
+                gameObjectsCollection.addGameObject(heart, Layer.BACKGROUND + 1);
+            }
             heartCollection[heartNumber] = heart;
         }
     }
-
-    private void updateLife() {
-        gameObjectsCollection.removeGameObject(heartCollection[livesCounter.value()],Layer.BACKGROUND+1);
-    }
-
-
 }
