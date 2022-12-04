@@ -7,14 +7,20 @@ import danogl.gui.rendering.Renderable;
 import danogl.util.Counter;
 import danogl.util.Vector2;
 
+/**
+ * Brick - a GameObject the winCondition is to remove all of its instances from the game.
+ * removing is done by collision of it and another object.
+ * removing it apply the strategies each brick has.
+ */
 public class Brick extends GameObject {
-    private CollisionStrategy []collisionStrategies;
-    private Counter counter;
-    private boolean decramented_counter;
-
+    private final Counter numberOfBricks;
+    private CollisionStrategy[] collisionStrategies;
+    private boolean decramentedCounter;
+    
     /**
      * Construct a new GameObject instance.
-     *  @param topLeftCorner Position of the object, in window coordinates (pixels).
+     *
+     * @param topLeftCorner Position of the object, in window coordinates (pixels).
      *                      Note that (0,0) is the top-left corner of the window.
      * @param dimensions    Width and height in window coordinates.
      * @param renderable    The renderable representing the object. Can be null, in which case
@@ -24,22 +30,32 @@ public class Brick extends GameObject {
                  Counter counter) {
         super(topLeftCorner, dimensions, renderable);
         this.collisionStrategies = collisionStrategies;
-        this.counter = counter;
+        this.numberOfBricks = counter;
         counter.increment();
-        decramented_counter = false;
+        decramentedCounter = false;
     }
-
+    
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);
-        for (CollisionStrategy strategy: collisionStrategies)
-            if (strategy!=null && !decramented_counter)
-                strategy.onCollision(this,other,counter);
+        for (CollisionStrategy strategy : collisionStrategies)
+            if (strategy != null && !decramentedCounter)
+                strategy.onCollision(this, other, numberOfBricks);
     }
-
-    public void loadStrategies(CollisionStrategy []collisionStrategies){
+    
+    /*
+    setter
+     */
+    public void setStrategies(CollisionStrategy[] collisionStrategies) {
         this.collisionStrategies = collisionStrategies;
     }
-
-    public void setDecramented_counter(){this.decramented_counter = true;}
+    
+    /*
+    used to find if a brick used counter.decrease() once already.
+    Meaningful in case of 2 balls that occupy the same location & same direction, that hit a
+     brick a once - we want to decrease the brick only once.
+     */
+    public void setDecramentedCounter() {
+        this.decramentedCounter = true;
+    }
 }

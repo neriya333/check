@@ -8,10 +8,13 @@ import danogl.util.Vector2;
 
 import java.util.Random;
 
-public class Ball extends GameObject{
+/**
+ *
+ */
+public class Ball extends GameObject {
     private static final float BALL_SPEED = 200;
-    private Sound collisionSound;
-
+    private final Sound collisionSound;
+    
     /**
      * Construct a new GameObject instance.
      *
@@ -25,16 +28,16 @@ public class Ball extends GameObject{
         super(topLeftCorner, dimensions, renderable);
         this.collisionSound = collisionSound;
         Random rand = new Random();
-
-        this.setVelocity(new Vector2(1,1));
-        float velocity_X = BALL_SPEED, velocity_Y  = BALL_SPEED;
+        
+        this.setVelocity(new Vector2(1, 1));
+        float velocity_X = BALL_SPEED, velocity_Y = BALL_SPEED;
         if (rand.nextBoolean())
-            velocity_X*=-1;
+            velocity_X *= -1;
         if (rand.nextBoolean())
-            velocity_Y*=-1;
+            velocity_Y *= -1;
         this.setVelocity(new Vector2(velocity_X, velocity_Y));
     }
-
+    
     @Override
     public void onCollisionEnter(GameObject other, Collision collision) {
         super.onCollisionEnter(other, collision);

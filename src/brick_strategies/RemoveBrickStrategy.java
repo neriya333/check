@@ -5,17 +5,32 @@ import danogl.collisions.GameObjectCollection;
 import danogl.util.Counter;
 import gameobjects.Brick;
 
-public class RemoveBrickStrategy implements CollisionStrategy{
+/**
+ * A must-have strategy. Remove the brick from the game.
+ */
+public class RemoveBrickStrategy implements CollisionStrategy {
     private final GameObjectCollection gameObjects;
-
-    public RemoveBrickStrategy(GameObjectCollection gameObjects){
+    
+    /**
+     * constrocor.
+     *
+     * @param gameObjects from which the brick will be removed
+     */
+    public RemoveBrickStrategy(GameObjectCollection gameObjects) {
         this.gameObjects = gameObjects;
     }
-
-    public void onCollision(GameObject collidedObj, GameObject colliderObj, Counter bricksCounter){
+    
+    /**
+     * the strat body
+     *
+     * @param collidedObj   the brick
+     * @param colliderObj   the ball
+     * @param bricksCounter the Counter to update of the removal of this brick.
+     */
+    public void onCollision(GameObject collidedObj, GameObject colliderObj, Counter bricksCounter) {
         gameObjects.removeGameObject(collidedObj);
         Brick b = (Brick) collidedObj;
-        b.setDecramented_counter();
+        b.setDecramentedCounter();
         bricksCounter.decrement();
     }
 }

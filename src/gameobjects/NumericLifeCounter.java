@@ -14,9 +14,9 @@ import java.awt.*;
  * made by extending GameObject.
  */
 public class NumericLifeCounter extends GameObject {
-    private String MSG_CONS_PART = "Life: ";
     private final TextRenderable textRenderable;
     private final Counter livesCounter;
+    private String MSG_CONS_PART = "Life: ";
     private Color color;
 
     /**
@@ -29,7 +29,7 @@ public class NumericLifeCounter extends GameObject {
     public NumericLifeCounter(Counter livesCounter, Vector2 topLeftCorner, Vector2 dimensions) {
         super(topLeftCorner, dimensions, null);
         this.livesCounter = livesCounter;
-        this.textRenderable = new TextRenderable(MSG_CONS_PART +livesCounter.value());
+        this.textRenderable = new TextRenderable(MSG_CONS_PART + livesCounter.value());
         textRenderable.setColor(Color.GREEN);
         this.renderer().setRenderable(textRenderable);
     }
@@ -37,8 +37,8 @@ public class NumericLifeCounter extends GameObject {
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
-        if(livesCounter.value() > 2) textRenderable.setColor(Color.green);
-        else if(livesCounter.value() == 2) textRenderable.setColor(Color.yellow);
+        if (livesCounter.value() > 2) textRenderable.setColor(Color.green);
+        else if (livesCounter.value() == 2) textRenderable.setColor(Color.yellow);
         else if (livesCounter.value() == 1) textRenderable.setColor(Color.red);
         textRenderable.setString(MSG_CONS_PART + livesCounter.value());
     }

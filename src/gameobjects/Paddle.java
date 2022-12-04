@@ -7,11 +7,15 @@ import danogl.util.Vector2;
 
 import java.awt.event.KeyEvent;
 
+/**
+ * A paddle that collides with objects, been controlled by hte left/right arrows, and can get the HP
+ * bonus
+ */
 public class Paddle extends GameObject {
     private static final float MOVE_SPEED = 300;
-    private UserInputListener userInputListener;
-    private Vector2 windowDimensions;
-
+    private final UserInputListener userInputListener;
+    private final Vector2 windowDimensions;
+    
     /**
      * Construct a new GameObject instance.
      *
@@ -27,15 +31,15 @@ public class Paddle extends GameObject {
         this.userInputListener = userInputListener;
         this.windowDimensions = windowDimensions;
     }
-
+    
     @Override
     public void update(float deltaTime) {
         super.update(deltaTime);
         Vector2 movement_dir = Vector2.ZERO;
-        if(this.userInputListener.isKeyPressed(KeyEvent.VK_LEFT) && this.getTopLeftCorner().x() > 0) {
+        if (this.userInputListener.isKeyPressed(KeyEvent.VK_LEFT) && this.getTopLeftCorner().x() > 0) {
             movement_dir = movement_dir.add(Vector2.LEFT);
-        }
-        else if(userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) && getTopLeftCorner().x() + this.getDimensions().x() < windowDimensions.x()) {
+        } else if (userInputListener.isKeyPressed(KeyEvent.VK_RIGHT) && getTopLeftCorner().x() +
+                this.getDimensions().x() < windowDimensions.x()) {
             movement_dir = movement_dir.add(Vector2.RIGHT);
         }
         setVelocity(movement_dir.mult(MOVE_SPEED));
